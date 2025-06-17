@@ -15,14 +15,14 @@
     <body>
      <nav class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark" >
         <div class="container-fluid">
-             <a class="navbar-brand" href="{{url('Home')}}">Les recettes vite faites</a>
+             <a class="navbar-brand" href="{{path('Home')}}">Les recettes vite faites</a>
              <div class= "collapse navbar-collapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('Home')}}"> Accueil </a>
+                        <a class="nav-link {{app.current_route starts with 'Home' ? 'active': ''}}" href="{{path('Home')}}"> Accueil </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('recipe.index')}}"> Recettes </a>
+                        <a class="nav-link {{app.current_route starts with 'recipe.' ? 'active': ''}}" href="{{path('recipe.index')}}"> Recettes </a>
                     </li>
                 </ul>
              </div>       
