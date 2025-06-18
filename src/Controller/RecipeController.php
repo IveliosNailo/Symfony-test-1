@@ -8,7 +8,7 @@ use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,16 +16,16 @@ final class RecipeController extends AbstractController
 {
    
    #[Route('/recettes', name: 'recipe.index',)]
-    public function index(HttpFoundationRequest $request, RecipeRepository $repository): Response
+    public function index( Request $request, RecipeRepository $repository): Response
     {
-        $recipes = $repository->findWhithDurationLowerThan(10);
+        $recipes = $repository->findWithDurationLowerThan(10);
         return $this->render('recipe/index.html.twig' , [
             'recipes' => $recipes
         ]);
     }
    
     #[Route('/recettes/{slug}-{id}', name: 'recipe.show', requirements: ['id'=>'\d+', 'slug'=>'[a-z0-9-]+'])]
-    public function show(HttpFoundationRequest $request, string $slug, int $id, RecipeRepository $repository): Response
+    public function show(Request $request, string $slug, int $id, RecipeRepository $repository): Response
     {
         $recipe = $repository-> find($id);
         if( $recipe-> getSlug() !== $slug ) {
@@ -36,7 +36,7 @@ final class RecipeController extends AbstractController
         ]);
     }
     #[Route('/recettes/{id}/edit', name: 'recipe.edit')]
-    public function edit(Recipe $recipe, HttpFoundationRequest $request, EntityManagerInterface $em) {
+    public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em): Response {
         $form = $this->createForm(RecipeTypeForm::class, $recipe);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
