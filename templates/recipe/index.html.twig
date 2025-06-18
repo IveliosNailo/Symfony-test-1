@@ -4,14 +4,30 @@
 
 {% block body %}
     <p>
-Il a écrit en latin et je ne sait pas lire le latin car je suis perdu et il s'est fait mangé par des loups ours cochon abeilles acompagné de la pire espèce vivant sur cette planette, la fusion des deux plus gros monstre ayant jamais exister : le pours, à moitié porc, à moitié ours 
+        Il a écrit en latin et je ne sait pas lire le latin car je suis perdu et il s'est fait mangé par des loups ours cochon abeilles acompagné de la pire espèce vivant sur cette planette, la fusion des deux plus gros monstre ayant jamais exister : le pours, à moitié porc, à moitié ours 
     </p>
-    <ul>
+    <p>
+        <a class="btn btn primary bnt-sm" href "{{ path ('recipe.create') }}"> Créer une recette</a>
+    </p>
+    <table class="table">
+        <thread>
+            <tr>
+                <th> Titre </th>
+                <th> Action </th>
+            </tr>
+        </thread>
+        <tbody>
         {% for recipe in recipes %}
-        <li>
-            <a href="{{ path('recipe.show', {id: recipe.id, slug : recipe.slug}) }}">{{recipe.title}}</a>
-        </li>
+        <tr>
+            <td>
+                <a href="{{ path('recipe.show', {id: recipe.id, slug : recipe.slug}) }}">{{recipe.title}}</a>
+            </td>
+            <td>
+                <a class="btn btn-primary btn-sm"href="{{ path('recipe.edit', {id: recipe.id, slug : recipe.slug}) }}">Editer</a>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 
 {% endblock %}
