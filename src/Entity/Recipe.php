@@ -29,6 +29,9 @@ class Recipe
     #[ORM\Column]
     private ?\DateTimeImmutable $updatesAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $duration = null;
+
 
     public function getId(): ?int
     {
@@ -91,6 +94,18 @@ class Recipe
     public function setUpdatesAt(\DateTimeImmutable $updatesAt): static
     {
         $this->updatesAt = $updatesAt;
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?int $duration): static
+    {
+        $this->duration = $duration;
 
         return $this;
     }
