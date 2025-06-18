@@ -41,7 +41,7 @@ final class RecipeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-            $this->addFlash('succes', 'La recette à bien été modifiée');
+            $this->addFlash('success', 'La recette à bien été modifiée');
             return $this-> redirectToRoute('recipe.index'); 
         }
         return $this->render('recipe/edit.html.twig', [
@@ -60,7 +60,7 @@ final class RecipeController extends AbstractController
             $recipe->setUpdatesAt(new \DateTimeImmutable());
             $em-> persist($recipe);
             $em->flush();
-            $this->addFlash('succes', 'La recette a bien été crée');
+            $this->addFlash('success', 'La recette a bien été crée');
             return $this->redirectToRoute('recipe.index');
         }
     return $this->render('recipe/create.html.twig', [
