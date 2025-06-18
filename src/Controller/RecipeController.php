@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Recipe;
+use App\Form\RecipeTypeForm;
+use App\Repository\RecipeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,18 +13,32 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RecipeController extends AbstractController
 {
    
-   #[Route('/recette', name: 'recipe.index',)]
-    public function index(HttpFoundationRequest $request): Response
+   #[Route('/recettes', name: 'recipe.index',)]
+    public function index(HttpFoundationRequest $request, RecipeRepository $repository): Response
     {
-      return $this->render('recipe/index.html.twig');
-    }
-   
-    #[Route('/recette/{slug}-{id}', name: 'recipe.show', requirements: ['id'=>'\d+', 'slug'=>'[a-z0-9-]+'])]
-    public function show(HttpFoundationRequest $request, string $slug, int $id): Response
-    {
-        return $this->render('recipe/show.html.twig',[
-            'slug'=> $slug,
-            'id'=> $id
+        $recipes = $repository->findWhithDurationLowerThan(10);
+        return $this->render('recipe/index.html.twig' , [
+            'recipes' => $recipes
         ]);
     }
+   
+    #[Route('/recettes/{slug}-{id}', name: 'recipe.show', requirements: ['id'=>'\d+', 'slug'=>'[a-z0-9-]+'])]
+    public function show(HttpFoundationRequest $request, string $slug, int $id, RecipeRepository $repository): Response
+    {
+        $recipe = $repository-> find($id);
+        if( $recipe-> getSlug() !== $slug ) {
+            return $this -> redirectToRoute('recipe.show', ['slug' => $recipe-> getSlug(), 'id' => $recipe-> getId()]);
+        }
+        return $this->render('recipe/show.html.twig',[
+            'recipe' => $recipe
+        ]);
+    }
+    #[Route('/recettes/{id}/edit', name: 'recipe.edit')]
+    public function edit(Recipe $recipe) {
+        $form = $this->createForm(RecipeTypeForm::class, $recipe);
+        return $this->render('recipe/edit.html.twig', [
+            'recipe' => $recipe,
+            'form' => $form
+        ]);
+    } 
 }
