@@ -18,7 +18,7 @@ final class RecipeController extends AbstractController
    #[Route('/recettes', name: 'recipe.index',)]
     public function index( Request $request, RecipeRepository $repository): Response
     {
-        $recipes = $repository->findWithDurationLowerThan(100);
+        $recipes = $repository->findWithDurationLowerThan(1000);
         return $this->render('recipe/index.html.twig' , [
             'recipes' => $recipes
         ]);
